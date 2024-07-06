@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+message Point {
+ float x =1;
+ float y =2;
+}
+message MapPartitionRequest {
+  int32 start = 1;
+  int32 end = 2;
+  int32 numMappers=3;
+  int32 numReducers =4;
+  repeated Point centroids =5;
+}
+
+
+message MapPartitionResponse {
+  string status=1;
+}
+
+message ReduceRequest {
+  int32 numMappers=1;
+  int32 numReducers =2;
+  int32 partition_id =3;
+}
+
+message ReduceResponse {
+  string status=1;
+  string data=2;
+}
+
+message GetInputRequest {
+  int32 reducer_id =1;
+}
+
+message GetInputResponse {
+  string data =1;
+}
+
+service MasterMapper {
+  rpc Map (MapPartitionRequest) returns (MapPartitionResponse) {}
+  rpc GetReducerDetails (ReduceRequest) returns (ReduceResponse) {}
+  rpc GetInputfromMapper (GetInputRequest) returns (GetInputResponse) {}
+}
